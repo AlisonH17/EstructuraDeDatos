@@ -11,7 +11,7 @@ import cu.edu.cujae.ceis.tree.general.GeneralTree;
 import cu.edu.cujae.ceis.tree.iterators.ITreeIterator;
 import cu.edu.cujae.ceis.tree.iterators.general.InDepthIterator;
 
-public class PlataformaMusical {
+public class PlataformaMusical implements Plataforma{
     private String nombre;
     private int anyoCreacion;
     private GeneralTree<Plataforma> appPlataforma;
@@ -20,6 +20,8 @@ public class PlataformaMusical {
         this.nombre = nombre;
         this.anyoCreacion = anyo;
         this.appPlataforma = new GeneralTree<>();
+        BinaryTreeNode<Plataforma> raiz = new BinaryTreeNode<>(this);
+        appPlataforma.setRoot(raiz);
     }
 
     public String getNombre() {
