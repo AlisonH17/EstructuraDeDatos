@@ -1,17 +1,18 @@
 
-public class Cancion {
+public class Cancion extends Plataforma {
     private String titulo;
     private double duracion;
     private int numPistas;
     private int cantReproducciones;
     //Constructor
-    public Cancion(String titulo, double duracion, int numPistas, int cantReproducciones) {
+    public Cancion(String nombre, int anyoCreacion, String titulo, double duracion, int numPistas,
+            int cantReproducciones) {
+        super(nombre, anyoCreacion);
         this.titulo = titulo;
         this.duracion = duracion;
         this.numPistas = numPistas;
         this.cantReproducciones = cantReproducciones;
     }
-
     //Getters y Setters
     public String getTitulo() {
         return titulo;

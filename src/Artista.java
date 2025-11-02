@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Artista {
+public class Artista implements Plataforma{
     private String nombre;
     private String genero;
     private String nacionalidad;

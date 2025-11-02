@@ -1,20 +1,22 @@
 import java.util.ArrayList;
 
-public class Album {
+public class Album implements Plataforma{
    private String titulo;
    private String anyoLanzamiento;
    private String genero;
    private int cantCanciones;
    private ArrayList<Cancion> canciones;
    //Constructor
-   public Album(String titulo, String anyoLanzamiento, String genero, int cantCanciones) {
-     this.titulo = titulo;
-     this.anyoLanzamiento = anyoLanzamiento;
-     this.genero = genero;
-     this.cantCanciones = cantCanciones;
-     this.canciones = new ArrayList<>();
-   }
-      //Getters y Setters
+      public Album(String titulo, String anyoLanzamiento, String genero,int cantCanciones) {
+        this.titulo = titulo;
+        this.anyoLanzamiento = anyoLanzamiento;
+        this.genero = genero;
+        this.cantCanciones = cantCanciones;
+        this.canciones = new ArrayList<>();
+    }
+
+
+    //Getters y Setters
    public String getTitulo() {
     return titulo;
    }
