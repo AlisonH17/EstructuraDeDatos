@@ -1,13 +1,11 @@
 
-public class Cancion extends Plataforma {
+public class Cancion implements Plataforma {
     private String titulo;
     private double duracion;
     private int numPistas;
     private int cantReproducciones;
     //Constructor
-    public Cancion(String nombre, int anyoCreacion, String titulo, double duracion, int numPistas,
-            int cantReproducciones) {
-        super(nombre, anyoCreacion);
+    public Cancion(String titulo, double duracion, int numPistas,int cantReproducciones) {
         this.titulo = titulo;
         this.duracion = duracion;
         this.numPistas = numPistas;
@@ -37,6 +35,14 @@ public class Cancion extends Plataforma {
     }
     public void setCantReproducciones(int cantReproducciones) {
         this.cantReproducciones = cantReproducciones;
+    }
+    @Override
+    public String getNombre() {
+        return titulo;
+    }
+    @Override
+    public int getAnyoCreacion() {
+        return -1;  // No aplica
     }
 
 

@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class Album implements Plataforma{
    private String titulo;
-   private String anyoLanzamiento;
+   private int anyoLanzamiento;
    private String genero;
    private int cantCanciones;
    private ArrayList<Cancion> canciones;
    //Constructor
-      public Album(String titulo, String anyoLanzamiento, String genero,int cantCanciones) {
+      public Album(String titulo, int anyoLanzamiento, String genero,int cantCanciones) {
         this.titulo = titulo;
         this.anyoLanzamiento = anyoLanzamiento;
         this.genero = genero;
@@ -23,10 +23,10 @@ public class Album implements Plataforma{
    public void setTitulo(String titulo) {
     this.titulo = titulo;
    }
-   public String getAnyoLanzamiento() {
+   public int getAnyoLanzamiento() {
     return anyoLanzamiento;
    }
-   public void setAnyoLanzamiento(String anyoLanzamiento) {
+   public void setAnyoLanzamiento(int anyoLanzamiento) {
     this.anyoLanzamiento = anyoLanzamiento;
    }
    public String getGenero() {
@@ -54,5 +54,17 @@ public class Album implements Plataforma{
 
     public void eliminarCancion(Cancion c){
         canciones.remove(c);
+    }
+
+
+    @Override
+    public String getNombre() {
+        return titulo;
+    }
+
+
+    @Override
+    public int getAnyoCreacion() {
+        return anyoLanzamiento;
     }
 }

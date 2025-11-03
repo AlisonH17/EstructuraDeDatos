@@ -12,16 +12,25 @@ import cu.edu.cujae.ceis.tree.iterators.ITreeIterator;
 import cu.edu.cujae.ceis.tree.iterators.general.InDepthIterator;
 
 public class PlataformaMusical implements Plataforma{
+    private static PlataformaMusical instance ; //Singleton...DPOO me persigue
     private String nombre;
     private int anyoCreacion;
     private GeneralTree<Plataforma> appPlataforma;
 
-    public PlataformaMusical(String nombre,int anyo){
+    private PlataformaMusical(String nombre,int anyo){
         this.nombre = nombre;
         this.anyoCreacion = anyo;
         this.appPlataforma = new GeneralTree<>();
         BinaryTreeNode<Plataforma> raiz = new BinaryTreeNode<>(this);
         appPlataforma.setRoot(raiz);
+    }
+
+    //Unica Instancia (Singleton)
+    public static PlataformaMusical getInstance(String nombre, int anyoCreacion) {
+        if (instance == null) {
+            instance = new PlataformaMusical(nombre, anyoCreacion);
+        }
+        return instance;
     }
 
     public String getNombre() {
@@ -63,22 +72,22 @@ public class PlataformaMusical implements Plataforma{
         return nodo;
     }
 
-    private Artista buscArtista(String nombreArt){
-        Artista art= null;
+    private Artista buscArtista(String nombreArt) {
+        Artista art = null;
         boolean encontrado = false;
         ITreeIterator<Plataforma> it = appPlataforma.inDepthIterator();
-        while(it.hasNext() && ! encontrado){
+        while (it.hasNext() && !encontrado) {
             BinaryTreeNode<Plataforma> actual = it.nextNode();
             Object info = actual.getInfo();
-            if(info instanceof SelloDiscografico){
-                ArrayList<Artista>lista= ((SelloDiscografico)info).listaArtistas();
-                Iterator<Artista>arts= lista.iterator();
-                while(arts.hasNext()&& !encontrado){
-                    if(arts.next().getNombre().equals(nombreArt)){
-                        encontrado= true;
-                        art= arts.next();
+            if (info instanceof SelloDiscografico) {
+                ArrayList<Artista> lista = ((SelloDiscografico) info).listaArtistas();
+                Iterator<Artista> arts = lista.iterator();
+                while (arts.hasNext() && !encontrado) {
+                    Artista temp = arts.next();  
+                    if (temp.getNombre().equals(nombreArt)) {
+                        encontrado = true;
+                        art = temp;
                     }
-                    
                 }
             }
         }
@@ -146,23 +155,22 @@ public class PlataformaMusical implements Plataforma{
     }
 
     //---INCISO E---
-    public Queue<Cancion> obtenerListaReproduccion(LinkedList<ListaRep>artistasPedidos){
+    public Queue<Cancion> obtenerListaReproduccion(LinkedList<ListaRep> artistasPedidos) {
         Queue<Cancion> playlist = new ArrayDeque<>();
         Iterator<ListaRep> it = artistasPedidos.iterator();
         while (it.hasNext()) {
-            String nombre = it.next().getNombreArt();
-            int cant = it.next().getCantCanciones();
+            ListaRep rep = it.next(); 
+            String nombre = rep.getNombreArt();
+            int cant = rep.getCantCanciones();
             int añadidas = 0;
-            Artista artEncontrado= buscArtista(nombre);
-            if( artEncontrado != null){
-                Iterator<Album> albIt=artEncontrado.getAlbumes().iterator();
-                while(albIt.hasNext() && añadidas < cant){
+            Artista artEncontrado = buscArtista(nombre);
+            if (artEncontrado != null) {
+                Iterator<Album> albIt = artEncontrado.getAlbumes().iterator();
+                while (albIt.hasNext() && añadidas < cant) {
                     Album album = albIt.next();
                     Iterator<Cancion> cancIt = album.getCanciones().iterator();
-
-                    while(cancIt.hasNext() && añadidas < cant){
+                    while (cancIt.hasNext() && añadidas < cant) {
                         Cancion c = cancIt.next();
-
                         playlist.offer(c);
                         añadidas++;
                     }
@@ -170,5 +178,51 @@ public class PlataformaMusical implements Plataforma{
             }
         }
         return playlist;
+    }
+    // Método para imprimir el árbol con jerarquía
+    public void imprimirArbol() {
+        System.out.println("Estructura del Árbol de la Plataforma:");
+        imprimirNodo((BinaryTreeNode<Plataforma>) appPlataforma.getRoot(), 0);
+    }
+    // Método auxiliar recursivo para imprimir nodos con indentación
+    private void imprimirNodo(BinaryTreeNode<Plataforma> nodo, int nivel) {
+        if (nodo == null) return;
+        for (int i = 0; i < nivel; i++) System.out.print("  ");
+        Plataforma info = nodo.getInfo();
+        if(info.getAnyoCreacion() != -1){
+        System.out.println("- " + info.getClass().getSimpleName() + ": " + info.getNombre() + " (Año: " + info.getAnyoCreacion() + ")");
+        }else{
+            System.out.println("- "+ info.getClass().getSimpleName() + ": "+info.getNombre());
+        }
+        for (BinaryTreeNode<Plataforma> hijo : appPlataforma.getSons(nodo)) {
+            imprimirNodo(hijo, nivel + 1);
+        }
+    
+    }
+
+    // Métodos adicionales para gestionar el árbol(Para prueba de Main)
+    public void agregarSello(SelloDiscografico sello) {
+        BinaryTreeNode<Plataforma> selloNodo = new BinaryTreeNode<Plataforma>(sello);
+       appPlataforma.insertNode(selloNodo, (BinaryTreeNode<Plataforma>) appPlataforma.getRoot());
+    }
+    // Método para agregar un artista a un sello (necesario para el árbol)
+    public void agregarArtistaASello(String nombreSello, Artista artista) {
+        BinaryTreeNode<Plataforma> selloNodo = encontrarNodo(nombreSello);
+        if (selloNodo != null) {
+            BinaryTreeNode<Plataforma> artistaNodo = new BinaryTreeNode<Plataforma>(artista);
+            appPlataforma.insertNode(artistaNodo, selloNodo);
+            // También agregar a la lista del sello
+            ((SelloDiscografico) selloNodo.getInfo()).agregarArtista(artista);
+        }
+    }
+    // Método para agregar un álbum a un artista
+    public void agregarAlbumAArtista(String nombreArtista, Album album) {
+        BinaryTreeNode<Plataforma> artistaNodo = encontrarNodo(nombreArtista);
+        if (artistaNodo != null) {
+            BinaryTreeNode<Plataforma> albumNodo = new BinaryTreeNode<Plataforma>(album);
+            appPlataforma.insertNode(albumNodo, artistaNodo);
+            // También agregar a la lista del artista
+            ((Artista) artistaNodo.getInfo()).agregarAlbum(album);
+        }
     }
 }

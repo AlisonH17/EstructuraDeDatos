@@ -46,4 +46,9 @@ public class Artista implements Plataforma{
     public void eliminarAlbum(Album a){
         albumes.remove(a);
     }
+
+    @Override
+    public int getAnyoCreacion() {
+        return -1;
+    }
 }

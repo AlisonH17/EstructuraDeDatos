@@ -1,14 +1,13 @@
 import java.util.ArrayList;
 
-public class SelloDiscografico extends Plataforma{
+public class SelloDiscografico implements Plataforma{
     private String nombre;
     private String pais;
     private int anyoFundacion;
     private ArrayList<Artista>artistas;
 
  
-    public SelloDiscografico(String nombre, int anyoCreacion, String nombre2, String pais, int anyoFundacion) {
-        super(nombre, anyoCreacion);
+    public SelloDiscografico( String nombre2, String pais, int anyoFundacion) {
         nombre = nombre2;
         this.pais = pais;
         this.anyoFundacion = anyoFundacion;
@@ -53,5 +52,9 @@ public class SelloDiscografico extends Plataforma{
             lista.add(a);
         }
         return lista;
+    }
+    @Override
+    public int getAnyoCreacion() {
+        return anyoFundacion;
     }
 }
